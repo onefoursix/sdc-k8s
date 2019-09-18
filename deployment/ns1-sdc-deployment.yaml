@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ns1-deployment
+  namespace: ns1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ns1-deployment
+  template:
+    metadata:
+      labels:
+        app : ns1-deployment
+    spec:
+      containers:
+      - name : ns1-sdc
+        image: onefoursix/sdc-openshift:latest
+        ports:
+        - containerPort: 18630
+        env:
+        - name: HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PORT0
+          value: "18630"
